@@ -1,0 +1,6 @@
+mkdir backend
+cd backend
+npm init -y
+npm install express mysql2 cors
+
+some of file in backend delete use the code again
