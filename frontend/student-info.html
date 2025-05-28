@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <title>Student Info</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 <body>
-  <h1>Welcome Student</h1>
+  <div class="container">
+    <h2>Student Info</h2>
+    <input type="text" id="student-name" placeholder="Full Name" />
+    <input type="text" id="student-id" placeholder="Student ID" />
+    <button onclick="startQuiz()">Start Quiz</button>
+  </div>
+
   <script>
-    const name = localStorage.getItem("studentName") || "Unknown";
-    document.write(`<p>Hello, ${name}!</p>`);
+    function startQuiz() {
+      const name = document.getElementById("student-name").value.trim();
+      const id = document.getElementById("student-id").value.trim();
+      if (name && id) {
+        localStorage.setItem("studentName", name);
+        localStorage.setItem("studentId", id);
+        window.location.href = "quiz.html";
+      }
+    }
   </script>
 </body>
 </html>
-

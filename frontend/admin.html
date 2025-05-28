@@ -1,7 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 <body>
-  <h1>Admin Panel</h1>
-  <!-- Load quiz results here -->
+  <div class="container">
+    <h2>Admin Panel</h2>
+    <button onclick="loadAdminResults()">Refresh Submissions</button>
+    <ul id="admin-results">
+      <li>Example: John Doe - 8/10</li>
+    </ul>
+  </div>
+
+  <script>
+    function loadAdminResults() {
+      // Example only — replace with actual backend logic
+      const results = [
+        { name: "John Doe", score: 8, total: 10 },
+        { name: "Jane Smith", score: 9, total: 10 }
+      ];
+      const list = document.getElementById("admin-results");
+      list.innerHTML = "";
+      results.forEach(r => {
+        const li = document.createElement("li");
+        li.textContent = `${r.name} - ${r.score}/${r.total}`;
+        list.appendChild(li);
+      });
+    }
+  </script>
 </body>
 </html>

@@ -1,154 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
   <title>Geography Quiz</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-
     body {
       margin: 0;
       font-family: 'Roboto', sans-serif;
       background: #e0f7fa url("https://source.unsplash.com/1600x900/?world-map") no-repeat center center fixed;
       background-size: cover;
+      color: #333;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #333;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 30px 15px;
     }
-    .container {
 
-      padding: 20px 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      max-width: 400px;
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       width: 100%;
-      animation: fadeIn 0.5s ease-in;
-      border: 2px solid #2e5984; 
+      max-width: 700px;
+      overflow-y: auto;
+      max-height: 90vh;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
+
     h2 {
       text-align: center;
       color: #2e5984;
       margin-bottom: 20px;
     }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #2e5984;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    button {
-      width: 100%;
-      padding: 10px 0;
-      border: none;
-      background: #2e5984;
-      color: #fff;
-      font-size: 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s;
-      margin-bottom: 10px;
-    }
-    button:hover {
-      background: #406d8d;
-    }
 
-    .section {
-      display: none;
-    }
-    .visible {
-      display: block;
-    }
     .question {
-      margin-bottom: 20px;
-
-      background: rgba(255, 255, 255, 0.8);
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 25px;
+      background: #f9f9f9;
+      border-left: 4px solid #2e5984;
+      padding: 15px;
+      border-radius: 6px;
     }
+
     .question p {
       margin: 0 0 10px;
       font-weight: 500;
     }
+
     label {
-      font-size: 14px;
       display: block;
-      margin-bottom: 5px;
-    }
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-    ul li {
-      padding: 5px 0;
-      border-bottom: 1px solid #eee;
+      margin-bottom: 6px;
       font-size: 14px;
+      cursor: pointer;
     }
 
-    #quiz-form {
-      max-height: 300px;
-      overflow-y: auto;
+    em {
+      color: #666;
+      font-size: 13px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #2e5984;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #406d8d;
     }
   </style>
 </head>
 <body>
-  <!-- The container starts with the login section background -->
-  <div class="container" style="background-image: url('https://i.pinimg.com/736x/db/7a/50/db7a50e34dfe7247b42870b1018a6545.jpg'); background-size: cover; background-position: center;">
-    <div id="login-section" class="section visible">
-      <h2>Login</h2>
-      <input type="text" id="username" placeholder="Enter username">
-      <button onclick="login()">Login</button>
-    </div>
-
-    <div id="student-info-section" class="section">
-      <h2>Student Info</h2>
-      <input type="text" id="student-name" placeholder="Full Name">
-      <input type="text" id="student-id" placeholder="Student ID">
-      <button onclick="startQuiz()">Start Quiz</button>
-    </div>
-
-    <div id="quiz-section" class="section">
-      <h2>Geography Quiz</h2>
-      <form id="quiz-form"></form>
-      <button onclick="submitQuiz()">Submit Quiz</button>
-    </div>
-
-    <div id="result-section" class="section">
-      <h2>Result</h2>
-      <p id="result-text"></p>
-    </div>
-
-    <div id="admin-section" class="section">
-      <h2>Admin Panel</h2>
-      <button onclick="loadAdminResults()">Refresh Submissions</button>
-      <ul id="admin-results"></ul>
-    </div>
+  <div class="container">
+    <h2>Geography Quiz</h2>
+    <p id="student-greeting"></p>
+    <form id="quiz-form"></form>
+    <button onclick="submitQuiz()">Submit Quiz</button>
   </div>
 
   <script>
     const quizData = [
-      { q: "1. The capital city of the Philippines is _____.", options: ["Cebu", "Davao", "Manila", "Baguio"], answer: 2 },
-      { q: "2. _____ is the largest ocean on Earth.", options: ["Indian Ocean", "Pacific Ocean", "Arctic Ocean", "Atlantic Ocean"], answer: 1 },
-      { q: "3. The country known for the Eiffel Tower is _____.", options: ["Italy", "Germany", "France", "Spain"], answer: 2 },
-      { q: "4. The continent where Egypt is located is _____.", options: ["Asia", "South America", "Africa", "Europe"], answer: 2 },
-      { q: "5. Japan is an island country located in _____.", options: ["Asia", "Europe", "Africa", "Australia"], answer: 0 },
-      { q: "6. The North Pole is located in the _____ Ocean.", options: ["Indian", "Atlantic", "Pacific", "Arctic"], answer: 3 },
-      { q: "7. _____ is the tallest mountain in the world.", options: ["Mount Fuji", "Mount Everest", "Mount Apo", "Mount Kilimanjaro"], answer: 1 },
-      { q: "8. The equator is an _____ line around the Earth.", options: ["vertical", "invisible", "imaginary", "icy"], answer: 2 },
-      { q: "9. The Philippines is made up of over _____ islands.", options: ["100", "500", "7,000", "1,000"], answer: 2 },
-      { q: "10. _____ is the coldest continent on Earth.", options: ["Asia", "Antarctica", "Europe", "Australia"], answer: 1 }
+      {
+        q: "The capital city of the Philippines is _____.",
+        options: ["Cebu", "Davao", "Manila", "Baguio"],
+        answer: 2,
+        fact: "Manila is one of the most densely populated cities in the world."
+      },
+      {
+        q: "_____ is the largest ocean on Earth.",
+        options: ["Indian Ocean", "Pacific Ocean", "Arctic Ocean", "Atlantic Ocean"],
+        answer: 1,
+        fact: "The Pacific Ocean is so vast, it covers more area than all land masses combined."
+      },
+      {
+        q: "The country known for the Eiffel Tower is _____.",
+        options: ["Italy", "Germany", "France", "Spain"],
+        answer: 2,
+        fact: "The Eiffel Tower was originally intended to be dismantled after 20 years."
+      },
+      {
+        q: "The continent where Egypt is located is _____.",
+        options: ["Asia", "South America", "Africa", "Europe"],
+        answer: 2,
+        fact: "Egypt is home to the only remaining ancient wonder: The Great Pyramid of Giza."
+      },
+      {
+        q: "Japan is an island country located in _____.",
+        options: ["Asia", "Europe", "Africa", "Australia"],
+        answer: 0,
+        fact: "Japan consists of over 6,800 islands."
+      },
+      {
+        q: "The North Pole is located in the _____ Ocean.",
+        options: ["Indian", "Atlantic", "Pacific", "Arctic"],
+        answer: 3,
+        fact: "The Arctic Ocean is the shallowest of the world's five major oceans."
+      },
+      {
+        q: "_____ is the tallest mountain in the world.",
+        options: ["Mount Fuji", "Mount Everest", "Mount Apo", "Mount Kilimanjaro"],
+        answer: 1,
+        fact: "Mount Everest grows about 4 millimeters taller every year due to tectonic activity."
+      },
+      {
+        q: "The equator is an _____ line around the Earth.",
+        options: ["vertical", "invisible", "imaginary", "icy"],
+        answer: 2,
+        fact: "The equator receives the most direct sunlight year-round."
+      },
+      {
+        q: "The Philippines is made up of over _____ islands.",
+        options: ["100", "500", "7,000", "1,000"],
+        answer: 2,
+        fact: "The Philippines has exactly 7,641 islands as of the latest count."
+      },
+      {
+        q: "_____ is the coldest continent on Earth.",
+        options: ["Asia", "Antarctica", "Europe", "Australia"],
+        answer: 1,
+        fact: "Antarctica holds 90% of the world’s ice and has no permanent residents."
+      }
     ];
 
-    let currentUser = "";
+    window.onload = () => {
+      const studentName = localStorage.getItem("studentName");
+      const studentId = localStorage.getItem("studentId");
 
-    function showSection(id) {
-      document.querySelectorAll(".section").forEach(sec => sec.classList.remove("visible"));
-      document.getElementById(id).classLi
+      if (!studentName || !studentId) {
+        alert("Please enter your student info first.");
+        window.location.href = "student-info.html";
+      } else {
+        document.getElementById("student-greeting").textContent = `Good luck, ${studentName}!`;
+        loadQuiz();
+      }
+    };
+
+    const quizForm = document.getElementById("quiz-form");
+
+    function loadQuiz() {
+      quizData.forEach((item, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question";
+
+        const question = document.createElement("p");
+        question.textContent = `${index + 1}. ${item.q}`;
+        questionDiv.appendChild(question);
+
+        item.options.forEach((opt, i) => {
+          const label = document.createElement("label");
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = `q${index}`;
+          input.value = i;
+          label.appendChild(input);
+          label.append(` ${opt}`);
+          questionDiv.appendChild(label);
+        });
+
+        const fact = document.createElement("em");
+        fact.textContent = `Fun Fact: ${item.fact}`;
+        questionDiv.appendChild(fact);
+
+        quizForm.appendChild(questionDiv);
+      });
+    }
+
+function submitQuiz() {
+  let score = 0;
+  let unanswered = 0;
+  const answers = [];
+
+  quizData.forEach((item, i) => {
+    const answer = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!answer) {
+      unanswered++;
+      answers.push(null);
+    } else {
+      const selected = parseInt(answer.value);
+      answers.push(selected);
+      if (selected === item.answer) score++;
+    }
+  });
+
+  if (unanswered > 0) {
+    const proceed = confirm(
+      `You have ${unanswered} unanswered question(s).\nDo you still want to submit the quiz?`
+    );
+    if (!proceed) return;
+  }
+
+  const studentName = localStorage.getItem("studentName");
+  const studentId = localStorage.getItem("studentId");
+
+  const submissionData = {
+    name: studentName,
+    studentId: studentId,
+    score: score,
+    total: quizData.length,
+    answers: answers,
+    submittedAt: new Date().toISOString()
+  };
+
+  let submissions = JSON.parse(localStorage.getItem("submissions")) || [];
+  submissions.push(submissionData);
+  localStorage.setItem("submissions", JSON.stringify(submissions));
+  localStorage.setItem("lastSubmission", JSON.stringify(submissionData));
+  localStorage.setItem("quizData", JSON.stringify(quizData)); // Save for breakdown
+
+  window.location.href = "results.html";
+}
+
+  </script>
+</body>
+</html>

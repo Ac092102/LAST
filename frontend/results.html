@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <title>Quiz Results</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #f0f4f8;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 30px 15px;
+    }
+
+    .container {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 700px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2e5984;
+      margin-bottom: 10px;
+    }
+
+    .summary {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .pass {
+      color: green;
+      font-weight: 700;
+    }
+
+    .fail {
+      color: red;
+      font-weight: 700;
+    }
+
+    .encouragement {
+      margin-top: 8px;
+      font-style: italic;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .question {
+      background: #f9f9f9;
+      border-left: 6px solid;
+      border-left-color: #2e5984;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+
+    .correct {
+      border-left-color: green;
+      background-color: #e6f4ea;
+    }
+
+    .incorrect {
+      border-left-color: red;
+      background-color: #f9e6e6;
+    }
+
+    .question p {
+      margin: 0 0 8px;
+      font-weight: 500;
+    }
+
+    .answer {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .correct-answer {
+      font-weight: 700;
+      color: green;
+    }
+
+    .incorrect-answer {
+      font-weight: 700;
+      color: red;
+    }
+
+    em {
+      color: #666;
+      font-size: 13px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #2e5984;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #406d8d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Quiz Results</h2>
+    <div class="summary" id="summary"></div>
+    <div id="breakdown"></div>
+    <button onclick="goBack()">Back to Student Info</button>
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = "student-info.html";
+    }
+
+    window.onload = () => {
+      const submissionData = JSON.parse(localStorage.getItem("lastSubmission"));
+      const quizData = JSON.parse(localStorage.getItem("quizData"));
+
+      if (!submissionData || !quizData) {
+        alert("No quiz data found. Please take the quiz first.");
+        window.location.href = "student-info.html";
+        return;
+      }
+
+      const { name, score, total, answers } = submissionData;
+      const passingScore = 7;
+
+      const encouragementMessages = [
+        "Don't give up! Practice makes perfect.",
+        "Keep trying, you’re getting there!",
+        "Every mistake is a step to learning.",
+        "You can do better next time — keep it up!",
+        "Learning is a journey, not a race."
+      ];
+
+      const congratulatoryMessages = [
+        "Excellent work! You're a geography star!",
+        "Congrats! Your hard work really paid off!",
+        "Well done! Keep up the fantastic effort!",
+        "You nailed it! Proud of your achievement!",
+        "Great job! You clearly know your geography!"
+      ];
+
+      // Select a random encouraging/congratulatory phrase
+      const encouragement = encouragementMessages[Math.floor(Math.random() * encouragementMessages.length)];
+      const congratulation = congratulatoryMessages[Math.floor(Math.random() * congratulatoryMessages.length)];
+
+      // Show summary with pass/fail and message
+      const summaryEl = document.getElementById("summary");
+      if (score >= passingScore) {
+        summaryEl.innerHTML = `
+          <p>Hello, <strong>${name}</strong>!</p>
+          <p>Your score: <strong>${score} / ${total}</strong></p>
+          <p class="pass">You passed the quiz.</p>
+          <p class="encouragement">${congratulation}</p>
+        `;
+      } else {
+        summaryEl.innerHTML = `
+          <p>Hello, <strong>${name}</strong>!</p>
+          <p>Your score: <strong>${score} / ${total}</strong></p>
+          <p class="fail">You did not pass the quiz.</p>
+          <p class="encouragement">${encouragement}</p>
+        `;
+      }
+
+      // Show breakdown
+      const breakdownEl = document.getElementById("breakdown");
+      quizData.forEach((item, i) => {
+        const userAnswer = answers[i];
+        const isCorrect = userAnswer === item.answer;
+
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question " + (isCorrect ? "correct" : "incorrect");
+
+        questionDiv.innerHTML = `
+          <p><strong>Q${i + 1}:</strong> ${item.q}</p>
+          <p class="answer">
+            Your answer: ${
+              userAnswer === null || userAnswer === undefined
+                ? '<em>No answer given</em>'
+                : item.options[userAnswer]
+            }
+          </p>
+          <p class="answer ${
+            isCorrect ? "correct-answer" : "incorrect-answer"
+          }">Correct answer: ${item.options[item.answer]}</p>
+          <em>Fun Fact: ${item.fact}</em>
+        `;
+
+        breakdownEl.appendChild(questionDiv);
+      });
+    };
+  </script>
+</body>
+</html>

@@ -1,2 +1,88 @@
-body { font-family: Arial; margin: 30px; }
-input, button { margin: 5px 0; display: block; }
+/* GENERAL STYLES */
+body {
+  font-family: Arial, sans-serif;
+  margin: 30px;
+  background: url("https://i.pinimg.com/736x/07/69/1c/07691cdb3470d9c0822edb4faad7fdc3.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: #333;
+}
+
+/* CONTAINER */
+.container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* HEADINGS */
+h2 {
+  text-align: center;
+  color: #2e5984;
+  margin-bottom: 20px;
+}
+
+/* INPUT & BUTTONS */
+input[type="text"],
+button {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #2e5984;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #406d8d;
+}
+
+/* QUIZ QUESTIONS */
+.question {
+  margin-bottom: 25px;
+  background: #f9f9f9;
+  border-left: 4px solid #2e5984;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.question p {
+  margin: 0 0 10px;
+  font-weight: 500;
+}
+
+/* RADIO BUTTONS AND LABELS */
+label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  transform: scale(1.2); /* slightly larger */
+  margin-right: 5px;
+}
+
+/* FUN FACTS */
+em {
+  display: block;
+  margin-top: 8px;
+  color: #666;
+  font-size: 13px;
+  font-style: italic;
+}
