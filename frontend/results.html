@@ -101,9 +101,15 @@
       font-size: 13px;
     }
 
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+
     button {
-      display: block;
-      width: 100%;
+      flex: 1;
       padding: 12px;
       background-color: #2e5984;
       color: white;
@@ -111,7 +117,7 @@
       border-radius: 6px;
       font-size: 16px;
       cursor: pointer;
-      margin-top: 20px;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -124,12 +130,19 @@
     <h2>Quiz Results</h2>
     <div class="summary" id="summary"></div>
     <div id="breakdown"></div>
-    <button onclick="goBack()">Back to Student Info</button>
+    <div class="button-group">
+      <button onclick="retakeQuiz()">Retake Quiz</button>
+      <button onclick="goLogin()">Log In</button>
+    </div>
   </div>
 
   <script>
-    function goBack() {
-      window.location.href = "student-info.html";
+    function retakeQuiz() {
+      window.location.href = "quiz.html";
+    }
+
+    function goLogin() {
+      window.location.href = "login.html"; // Change if your login page filename is different
     }
 
     window.onload = () => {
